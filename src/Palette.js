@@ -32,7 +32,7 @@ class Palette extends Component {
           value={lumi}
           onChange={this.handleLumi}
           color="secondary"
-          marks={true}
+          marks
         />
         <div className="Palette-colors">{colors}</div>
       </div>
