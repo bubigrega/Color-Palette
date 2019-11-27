@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./ColorBox.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import "./ColorBox.css";
 
 class ColorBox extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class ColorBox extends Component {
   render() {
     const { name, background } = this.props;
     const { copied } = this.state;
-    console.log(this.state.copied);
+    console.log(background);
     return (
       <div style={{ background }} className="ColorBox">
         <div

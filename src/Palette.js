@@ -1,39 +1,49 @@
 import React, { Component } from "react";
 import ColorBox from "./ColorBox";
-
+import { AppBar, Typography, Toolbar, Slider } from "@material-ui/core";
 import "./Palette.css";
-import { Slider } from "@material-ui/core";
 
 class Palette extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      lumi: 500
+      level: 500
     };
-    this.handleLumi = this.handleLumi.bind(this);
+    this.handelLevel = this.handelLevel.bind(this);
   }
-  handleLumi(evt, value) {
-    this.setState({ lumi: value });
+  handelLevel(evt, value) {
+    this.setState({ level: value });
   }
 
   render() {
-    let { lumi } = this.state;
-    console.log(lumi);
-    let colors = this.props.colors[lumi].map(c => (
+    let { level } = this.state;
+    let colors = this.props.colors[level].map(c => (
       <ColorBox key={c.id} background={c.color} name={c.name} />
     ));
     return (
       <div className="Palette">
-        <Slider
-          min={100}
-          max={900}
-          step={100}
-          value={lumi}
-          onChange={this.handleLumi}
-          color="secondary"
-          marks
-        />
+        <AppBar position="sticky">
+          <Toolbar>
+            <Typography variant="h5">colorpicker</Typography>
+            <Typography
+              variant="h3"
+              style={{ width: "10%", margin: "0 1rem 0 2rem" }}
+            >
+              <Slider
+                min={100}
+                max={900}
+                step={100}
+                defaultValue={500}
+                value={level}
+                onChange={this.handelLevel}
+                color="secondary"
+                marks
+                use
+              />
+            </Typography>
+            <Typography variant="h6">{level}</Typography>
+          </Toolbar>
+        </AppBar>
         <div className="Palette-colors">{colors}</div>
       </div>
     );

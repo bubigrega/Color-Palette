@@ -8,6 +8,7 @@ function App() {
   return (
     <div className="App">
       <CssBaseline />
+
       <Palette {...create(ColorPalettes[0])} />
     </div>
   );
