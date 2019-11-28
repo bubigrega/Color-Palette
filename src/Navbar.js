@@ -57,12 +57,11 @@ class Navbar extends Component {
               />
             </Typography>
             <Typography variant="h6">{level}</Typography>
-            <Typography style={{ width: "100%" }} />
             <Select
               value={colorValue}
               onChange={this.handleChange}
               color="secondary"
-              style={{ color: "white" }}
+              style={{ color: "white", marginLeft: "auto" }}
             >
               <MenuItem value="hex" name="hex">
                 HEX #f5fe5f
