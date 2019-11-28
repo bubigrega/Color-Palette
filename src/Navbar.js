@@ -5,22 +5,29 @@ import {
   Typography,
   Slider,
   Select,
-  MenuItem
+  MenuItem,
+  Snackbar,
+  IconButton
 } from "@material-ui/core";
+import Close from "@material-ui/icons/Close";
 
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorValue: "hex"
+      colorValue: "hex",
+      open: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
   handleChange(event) {
-    this.setState(state => ({ colorValue: event.target.value }));
+    this.setState(state => ({ colorValue: event.target.value, open: true }));
     this.props.handelStyle(event.target.value);
   }
-
+  handleClose() {
+    this.setState(state => ({ open: false }));
+  }
   render() {
     let { handelLevel, level } = this.props;
     let { colorValue } = this.state;
@@ -72,6 +79,24 @@ class Navbar extends Component {
             </Select>
           </Toolbar>
         </AppBar>
+        <Snackbar
+          anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
+          message={
+            <span id="message-id">
+              Format changed to {colorValue.toUpperCase()}
+            </span>
+          }
+          open={this.state.open}
+          onClose={this.handleClose}
+          autoHideDuration={3000}
+          color="secondary"
+          ContentProps={{ "aria-describedby": "messag-id" }}
+          action={
+            <IconButton onClick={this.handleClose} color="inherit">
+              <Close key="close" aria-label="close" />
+            </IconButton>
+          }
+        ></Snackbar>
       </div>
     );
   }
