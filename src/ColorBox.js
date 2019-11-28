@@ -14,9 +14,8 @@ class ColorBox extends Component {
     });
   }
   render() {
-    const { name, background } = this.props;
+    const { name, background, style } = this.props;
     const { copied } = this.state;
-    console.log(background);
     return (
       <div style={{ background }} className="ColorBox">
         <div
@@ -25,13 +24,13 @@ class ColorBox extends Component {
         />
         <div className={`copy-msg ${copied && "show"}`}>
           <h1>copied!</h1>
-          <p>{background}</p>
+          <p>{style}</p>
         </div>
         <div className="copy-container">
           <div className="box-content">
             <span>{name}</span>
           </div>
-          <CopyToClipboard onCopy={this.handleCopyState} text={background}>
+          <CopyToClipboard onCopy={this.handleCopyState} text={style}>
             <button disabled={copied} className="copy-button">
               Copy
             </button>
