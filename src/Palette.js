@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import "./Palette.css";
+import Footer from "./Footer";
 
 class Palette extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class Palette extends Component {
           handelStyle={this.handelStyle}
         />
         <div className="Palette-colors">{colors}</div>
+        <Footer name={this.props.paletteName} emoji={this.props.emoji} />
       </div>
     );
   }

@@ -4,7 +4,7 @@ const levels = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 const generatePalette = palette => {
   let newPalette = {
-    paletteName: palette.name,
+    paletteName: palette.paletteName,
     id: palette.id,
     emoji: palette.emoji,
     colors: {}

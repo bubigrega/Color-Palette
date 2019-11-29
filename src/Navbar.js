@@ -34,7 +34,7 @@ class Navbar extends Component {
 
     return (
       <div>
-        <AppBar position="sticky">
+        <AppBar position="sticky" style={{ bottom: "auto" }}>
           <Toolbar>
             <Typography variant="h5">colorpicker</Typography>
             <Typography
