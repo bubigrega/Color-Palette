@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -7,7 +8,9 @@ import {
   Select,
   MenuItem,
   Snackbar,
-  IconButton
+  IconButton,
+  Link as MULink,
+  Button
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
 
@@ -36,7 +39,14 @@ class Navbar extends Component {
       <div>
         <AppBar position="sticky" style={{ bottom: "auto" }}>
           <Toolbar>
-            <Typography variant="h5">colorpicker</Typography>
+            <Link style={{ textDecoration: "none" }} exact to="/">
+              <Typography
+                variant="h5"
+                style={{ color: "white", outline: "none" }}
+              >
+                colorpicker
+              </Typography>
+            </Link>
             <Typography
               variant="h3"
               style={{

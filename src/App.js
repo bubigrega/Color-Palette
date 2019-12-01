@@ -4,10 +4,11 @@ import Palette from "./Palette";
 import create from "./createPaletteHelper";
 import { CssBaseline } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
+import PaletteList from "./PaletteList";
 
 class App extends React.Component {
-  pickPalette(pallete, index) {
-    return create(pallete[index]);
+  pickPalette(id) {
+    return create(InitialPalettes.find(p => p.id === id));
   }
   render() {
     // let palette = create(ColorPalettes[0]);
@@ -15,17 +16,16 @@ class App extends React.Component {
       <div className="App">
         <CssBaseline />
         <Switch>
-          <Route exact path="/" render={() => <p>pick a palette U+1F1E6</p>} />
+          <Route
+            exact
+            path="/"
+            render={() => <PaletteList InitialPalettes={InitialPalettes} />}
+          />
           <Route
             exact
             path="/palette/:id"
             render={routeProps => (
-              <Palette
-                {...this.pickPalette(
-                  InitialPalettes,
-                  routeProps.match.params.id
-                )}
-              />
+              <Palette {...this.pickPalette(routeProps.match.params.id)} />
             )}
           />
           <Route render={() => <h1>404</h1>} />
