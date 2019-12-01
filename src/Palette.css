@@ -1,7 +1,10 @@
 .Palette {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .Palette-colors {
-  height: 84%;
+  height: 100%;
+  margin-bottom: -4px;
 }
