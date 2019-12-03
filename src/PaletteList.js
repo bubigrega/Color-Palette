@@ -1,7 +1,6 @@
 import React from "react";
 import PaletteInfo from "./PaletteInfo";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -31,15 +30,13 @@ const useStyles = makeStyles({
     gridTemplateColumns: "repeat(3, 1fr)",
     gridRowGap: "0.5rem",
     gridColumnGap: "1rem"
-  },
-  link: {
-    textDecoration: "none"
   }
 });
 
 const PaletteList = props => {
-  const { root, container, nav, palettes, link } = useStyles();
+  const { root, container, nav, palettes } = useStyles();
   const { InitialPalettes } = props;
+
   return (
     <div className={root}>
       <div className={container}>
@@ -48,9 +45,11 @@ const PaletteList = props => {
         </nav>
         <div className={palettes}>
           {InitialPalettes.map(p => (
-            <Link exact to={`/palette/${p.id}`} key={p.id} className={link}>
-              <PaletteInfo {...p} />
-            </Link>
+            <PaletteInfo
+              key={p.id}
+              {...p}
+              handleClick={() => props.history.push(`/palette/${p.id}`)}
+            />
           ))}
         </div>
       </div>

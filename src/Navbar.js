@@ -37,7 +37,7 @@ class Navbar extends Component {
       <div>
         <AppBar position="sticky" style={{ bottom: "auto" }}>
           <Toolbar>
-            <Link style={{ textDecoration: "none" }} exact to="/">
+            <Link style={{ textDecoration: "none" }} to="/">
               <Typography
                 variant="h5"
                 style={{ color: "white", outline: "none" }}

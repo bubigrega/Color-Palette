@@ -14,7 +14,17 @@ const useStyles = makeStyles({
     }
   },
   colors: {
-    backgroundColor: "grey"
+    backgroundColor: "lightgray",
+    position: "relative",
+    height: "150px",
+    borderRadius: "5px",
+    overflow: "hidden",
+    display: "grid",
+    gridTemplateColumns: "repeat(5, 1fr)",
+    gridTemplateRows: "repeat(4, 1fr)"
+  },
+  tile: {
+    display: "inline-block"
   },
   title: {
     display: "flex",
@@ -33,12 +43,18 @@ const useStyles = makeStyles({
 });
 
 function PaletteInfo(props) {
-  const { paletteName, emoji } = props;
+  const { paletteName, emoji, handleClick, colors } = props;
   const classes = useStyles();
+  const tiles = colors.map(c => (
+    <div
+      key={c.name}
+      className={classes.tile}
+      style={{ backgroundColor: c.color }}
+    />
+  ));
   return (
-    <div className={classes.root}>
-      <div className={classes.colors}></div>
-
+    <div className={classes.root} onClick={handleClick}>
+      <div className={classes.colors}>{tiles}</div>
       <h5 className={classes.title}>
         {paletteName}
         <span className={classes.emoji}>{emoji}</span>

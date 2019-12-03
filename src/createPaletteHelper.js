@@ -16,7 +16,7 @@ const generatePalette = palette => {
     let colorLevels = changeColors(color, levels.length);
     for (let index in colorLevels) {
       newPalette.colors[levels[index]].push({
-        id: colorLevels[index].toLocaleLowerCase().replace(" ", "-"),
+        id: color.name.toLowerCase(),
         hex: colorLevels[index],
         name: `${color.name} ${levels[index]}`,
         rgb: chroma(colorLevels[index]).css(),
@@ -25,7 +25,6 @@ const generatePalette = palette => {
       });
     }
   }
-
   return newPalette;
 };
 

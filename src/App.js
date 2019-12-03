@@ -5,13 +5,27 @@ import create from "./createPaletteHelper";
 import { CssBaseline } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
 import PaletteList from "./PaletteList";
+import SingleColor from "./SingleColor";
+
+import "./App.css";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.pickColorVariants = this.pickColorVariants.bind(this);
+  }
   pickPalette(id) {
     return create(InitialPalettes.find(p => p.id === id));
   }
+  pickColorVariants(paletteId, colorId) {
+    let colorVariants = [];
+    let palette = this.pickPalette(paletteId).colors;
+    for (let item in palette) {
+      colorVariants.push(palette[item].find(c => c.id === colorId));
+    }
+    return colorVariants;
+  }
   render() {
-    // let palette = create(ColorPalettes[0]);
     return (
       <div className="App">
         <CssBaseline />
@@ -19,13 +33,27 @@ class App extends React.Component {
           <Route
             exact
             path="/"
-            render={() => <PaletteList InitialPalettes={InitialPalettes} />}
+            render={routerProps => (
+              <PaletteList InitialPalettes={InitialPalettes} {...routerProps} />
+            )}
           />
           <Route
             exact
             path="/palette/:id"
             render={routeProps => (
               <Palette {...this.pickPalette(routeProps.match.params.id)} />
+            )}
+          />
+          <Route
+            exact
+            path="/palette/:paletteId/:colorId"
+            render={routeProps => (
+              <SingleColor
+                colors={this.pickColorVariants(
+                  routeProps.match.params.paletteId,
+                  routeProps.match.params.colorId
+                )}
+              />
             )}
           />
           <Route render={() => <h1>404</h1>} />
