@@ -6,13 +6,11 @@ import Footer from "./Footer";
 const useStyles = makeStyles({
   root: {
     height: "100vh",
-    position: "relative",
     display: "flex",
     flexDirection: "column"
   },
-  colors: {
+  colorsGrid: {
     flexGrow: "1",
-    position: "relative",
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "1fr 1fr"
@@ -21,12 +19,22 @@ const useStyles = makeStyles({
 });
 
 function SingleColor(props) {
-  const { root, colors, colorBox } = useStyles();
+  const { root, colorsGrid, colorBox } = useStyles();
+  const { colors, colorId } = props;
+  const pickShades = (colors, colorId) => {
+    let shades = [];
+    let colorLevels = colors.colors;
+    for (let key in colorLevels) {
+      shades.push(colorLevels[key].find(c => colorId === c.id));
+    }
+    return shades;
+  };
+
   return (
     <div className={root}>
       <Navbar />
-      <div className={colors}>
-        {props.colors.map(c => (
+      <div className={colorsGrid}>
+        {pickShades(colors, colorId).map(c => (
           <div
             key={c.name}
             className={colorBox}
@@ -36,7 +44,11 @@ function SingleColor(props) {
           </div>
         ))}
       </div>
-      <Footer />
+      <Footer
+        name={colors.paletteName}
+        emoji={colors.emoji}
+        colorName={colorId}
+      />
     </div>
   );
 }

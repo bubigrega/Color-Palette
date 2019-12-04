@@ -3,11 +3,18 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
 class Footer extends Component {
   render() {
+    const { emoji, name, colorName } = this.props;
+    console.log(colorName);
     return (
       <AppBar position="sticky" style={{ bottom: "0" }}>
         <Toolbar>
           <Typography variant="h6" style={{ marginLeft: "auto" }}>
-            {this.props.emoji + " " + this.props.name}
+            {`${emoji} ${name}`}
+            {colorName ? (
+              <span style={{ textTransform: "capitalize" }}> {colorName}</span>
+            ) : (
+              ""
+            )}
           </Typography>
         </Toolbar>
       </AppBar>

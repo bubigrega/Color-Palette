@@ -49,10 +49,8 @@ class App extends React.Component {
             path="/palette/:paletteId/:colorId"
             render={routeProps => (
               <SingleColor
-                colors={this.pickColorVariants(
-                  routeProps.match.params.paletteId,
-                  routeProps.match.params.colorId
-                )}
+                colors={this.pickPalette(routeProps.match.params.paletteId)}
+                colorId={routeProps.match.params.colorId}
               />
             )}
           />
