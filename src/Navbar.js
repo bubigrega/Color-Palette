@@ -19,18 +19,18 @@ class Navbar extends Component {
       colorValue: "hex",
       open: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handelChange = this.handelChange.bind(this);
+    this.handelClose = this.handelClose.bind(this);
   }
-  handleChange(event) {
+  handelChange(event) {
     this.setState(state => ({ colorValue: event.target.value, open: true }));
-    this.props.handelStyle(event.target.value);
+    this.props.handelCopyText(event.target.value);
   }
-  handleClose() {
+  handelClose() {
     this.setState(state => ({ open: false }));
   }
   render() {
-    let { handelLevel, level } = this.props;
+    let { handelLevel, level, show } = this.props;
     let { colorValue } = this.state;
 
     return (
@@ -53,21 +53,23 @@ class Navbar extends Component {
                 margin: "0 1rem 0 2rem"
               }}
             >
-              <Slider
-                min={100}
-                max={900}
-                step={100}
-                defaultValue={500}
-                value={level}
-                onChange={handelLevel}
-                color="secondary"
-                marks
-              />
+              {show && (
+                <Slider
+                  min={100}
+                  max={900}
+                  step={100}
+                  defaultValue={500}
+                  value={level}
+                  onChange={handelLevel}
+                  color="secondary"
+                  marks
+                />
+              )}
             </Typography>
             <Typography variant="h6">{level}</Typography>
             <Select
               value={colorValue}
-              onChange={this.handleChange}
+              onChange={this.handelChange}
               color="secondary"
               style={{ color: "white", marginLeft: "auto" }}
             >
@@ -94,12 +96,12 @@ class Navbar extends Component {
             </span>
           }
           open={this.state.open}
-          onClose={this.handleClose}
+          onClose={this.handelClose}
           autoHideDuration={3000}
           color="secondary"
           ContentProps={{ "aria-describedby": "messag-id" }}
           action={
-            <IconButton onClick={this.handleClose} color="inherit">
+            <IconButton onClick={this.handelClose} color="inherit">
               <Close key="close" aria-label="close" />
             </IconButton>
           }

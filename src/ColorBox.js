@@ -7,15 +7,15 @@ class ColorBox extends Component {
   constructor(props) {
     super(props);
     this.state = { copied: false };
-    this.handleCopyState = this.handleCopyState.bind(this);
+    this.handelCopyState = this.handelCopyState.bind(this);
   }
-  handleCopyState() {
+  handelCopyState() {
     this.setState({ copied: true }, () => {
       setTimeout(() => this.setState({ copied: false }), 1500);
     });
   }
   render() {
-    const { name, background, style, id, paletteId } = this.props;
+    const { name, background, copyText, id, paletteId, show } = this.props;
     const { copied } = this.state;
     return (
       <div style={{ background }} className="ColorBox">
@@ -25,23 +25,25 @@ class ColorBox extends Component {
         />
         <div className={`copy-msg ${copied && "show"}`}>
           <h1>copied!</h1>
-          <p>{style}</p>
+          <p>{copyText}</p>
         </div>
         <div className="copy-container">
           <div className="box-content">
             <span>{name}</span>
           </div>
-          <CopyToClipboard onCopy={this.handleCopyState} text={style}>
+          <CopyToClipboard onCopy={this.handelCopyState} text={copyText}>
             <button disabled={copied} className="copy-button">
               Copy
             </button>
           </CopyToClipboard>
-          <Link
-            to={`/palette/${paletteId}/${id}`}
-            onClick={event => event.stopPropagation()}
-          >
-            <span className="see-more">MORE</span>
-          </Link>
+          {show && (
+            <Link
+              to={`/palette/${paletteId}/${id}`}
+              onClick={event => event.stopPropagation()}
+            >
+              <span className="see-more">MORE</span>
+            </Link>
+          )}
         </div>
       </div>
     );

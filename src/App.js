@@ -47,10 +47,11 @@ class App extends React.Component {
           <Route
             exact
             path="/palette/:paletteId/:colorId"
-            render={routeProps => (
+            render={routerProps => (
               <SingleColor
-                colors={this.pickPalette(routeProps.match.params.paletteId)}
-                colorId={routeProps.match.params.colorId}
+                {...routerProps}
+                colors={this.pickPalette(routerProps.match.params.paletteId)}
+                colorId={routerProps.match.params.colorId}
               />
             )}
           />

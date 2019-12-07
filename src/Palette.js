@@ -9,27 +9,28 @@ class Palette extends Component {
     super(props);
     this.state = {
       level: 500,
-      style: "hex"
+      copyText: "hex"
     };
     this.handelLevel = this.handelLevel.bind(this);
-    this.handelStyle = this.handelStyle.bind(this);
+    this.handelCopyText = this.handelCopyText.bind(this);
   }
   handelLevel(evt, value) {
     this.setState({ level: value });
   }
 
-  handelStyle(style) {
-    this.setState(state => ({ style }));
+  handelCopyText(copyText) {
+    this.setState(state => ({ copyText }));
   }
 
   render() {
     let { colors, paletteName, emoji, id } = this.props;
-    let { level, style } = this.state;
+    let { level, copyText } = this.state;
     let allColors = colors[level].map(c => (
       <ColorBox
+        show
         key={c.name}
         background={c.hex}
-        style={c[style]}
+        copyText={c[copyText]}
         name={c.name}
         paletteId={id}
         id={c.id}
@@ -38,9 +39,10 @@ class Palette extends Component {
     return (
       <div className="Palette">
         <Navbar
+          show
           level={level}
           handelLevel={this.handelLevel}
-          handelStyle={this.handelStyle}
+          handelCopyText={this.handelCopyText}
         />
         <div className="Palette-colors">{allColors}</div>
         <Footer name={paletteName} emoji={emoji} />

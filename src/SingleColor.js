@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/core/styles";
 import Footer from "./Footer";
+import { Button } from "@material-ui/core";
+import ColorBox from "./ColorBox";
 
 const useStyles = makeStyles({
   root: {
@@ -15,12 +17,23 @@ const useStyles = makeStyles({
     gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "1fr 1fr"
   },
-  colorBox: {}
+  backButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "lightgray"
+  }
 });
 
 function SingleColor(props) {
-  const { root, colorsGrid, colorBox } = useStyles();
   const { colors, colorId } = props;
+  const { root, colorsGrid, backButton } = useStyles();
+  const [copyText, setCopyText] = useState("hex");
+
+  const handelCopyText = style => {
+    setCopyText(style);
+  };
+
   const pickShades = (colors, colorId) => {
     let shades = [];
     let colorLevels = colors.colors;
@@ -32,17 +45,31 @@ function SingleColor(props) {
 
   return (
     <div className={root}>
-      <Navbar />
+      <Navbar
+        show={false}
+        handelCopyText={handelCopyText}
+        copyText={copyText}
+      />
       <div className={colorsGrid}>
         {pickShades(colors, colorId).map(c => (
-          <div
+          <ColorBox
             key={c.name}
-            className={colorBox}
-            style={{ backgroundColor: c.hex }}
-          >
-            {c.name}
-          </div>
+            show={false}
+            name={c.name}
+            background={c.hex}
+            copyText={c[copyText]}
+          />
         ))}
+        <div className={backButton}>
+          <Button
+            variant="outlined"
+            size="large"
+            color="primary"
+            onClick={() => props.history.push(`/palette/${colors.id}`)}
+          >
+            Back
+          </Button>
+        </div>
       </div>
       <Footer
         name={colors.paletteName}

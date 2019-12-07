@@ -5,6 +5,7 @@
 }
 
 .Palette-colors {
-  height: 100%;
-  margin-bottom: -4px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
 }
