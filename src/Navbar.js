@@ -42,7 +42,7 @@ class Navbar extends Component {
                 variant="h5"
                 style={{ color: "white", outline: "none" }}
               >
-                colorpicker
+                colorpalette
               </Typography>
             </Link>
             <Typography

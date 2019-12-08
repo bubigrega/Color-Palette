@@ -4,7 +4,6 @@ import { AppBar, Toolbar, Typography } from "@material-ui/core";
 class Footer extends Component {
   render() {
     const { emoji, name, colorName } = this.props;
-    console.log(colorName);
     return (
       <AppBar position="sticky" style={{ bottom: "0" }}>
         <Toolbar>
