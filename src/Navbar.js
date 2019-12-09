@@ -11,6 +11,8 @@ import {
   IconButton
 } from "@material-ui/core";
 import Close from "@material-ui/icons/Close";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles/NavbarStyles.js";
 
 class Navbar extends Component {
   constructor(props) {
@@ -30,29 +32,19 @@ class Navbar extends Component {
     this.setState(state => ({ open: false }));
   }
   render() {
-    let { handelLevel, level, show } = this.props;
+    let { handelLevel, level, show, classes } = this.props;
     let { colorValue } = this.state;
 
     return (
       <div>
-        <AppBar position="sticky" style={{ bottom: "auto" }}>
+        <AppBar position="sticky" className={classes.root}>
           <Toolbar>
-            <Link style={{ textDecoration: "none" }} to="/">
-              <Typography
-                variant="h5"
-                style={{ color: "white", outline: "none" }}
-              >
+            <Link className={classes.link} to="/">
+              <Typography variant="h5" className={classes.navLogo}>
                 colorpalette
               </Typography>
             </Link>
-            <Typography
-              variant="h3"
-              style={{
-                width: "10%",
-                minWidth: "150px",
-                margin: "0 1rem 0 2rem"
-              }}
-            >
+            <Typography variant="h3" className={classes.slider}>
               {show && (
                 <Slider
                   min={100}
@@ -71,7 +63,7 @@ class Navbar extends Component {
               value={colorValue}
               onChange={this.handelChange}
               color="secondary"
-              style={{ color: "white", marginLeft: "auto" }}
+              className={classes.navSelect}
             >
               <MenuItem value="hex" name="hex">
                 HEX #f5fe5f
@@ -111,4 +103,4 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+export default withStyles(styles)(Navbar);

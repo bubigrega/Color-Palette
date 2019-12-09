@@ -4,26 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Footer from "./Footer";
 import { Button } from "@material-ui/core";
 import ColorBox from "./ColorBox";
+import styles from "./styles/SingleColorStyles";
 
-const useStyles = makeStyles({
-  root: {
-    height: "100vh",
-    display: "flex",
-    flexDirection: "column"
-  },
-  colorsGrid: {
-    flexGrow: "1",
-    display: "grid",
-    gridTemplateColumns: "repeat(5, 1fr)",
-    gridTemplateRows: "1fr 1fr"
-  },
-  backButton: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "lightgray"
-  }
-});
+const useStyles = makeStyles(styles);
 
 function SingleColor(props) {
   const { colors, colorId } = props;
