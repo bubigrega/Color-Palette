@@ -1,21 +1,25 @@
 import React from "react";
 import PaletteInfo from "./PaletteInfo";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 import styles from "./styles/PaletteListStyles";
 
 const useStyles = makeStyles(styles);
 
 const PaletteList = props => {
-  const { root, container, nav, palettes } = useStyles();
+  const classes = useStyles();
   const { InitialPalettes } = props;
 
   return (
-    <div className={root}>
-      <div className={container}>
-        <nav className={nav}>
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <nav className={classes.nav}>
           <h1>React Colors</h1>
+          <Link className={classes.navLink} exact to="/palette/new">
+            Create new
+          </Link>
         </nav>
-        <div className={palettes}>
+        <div className={classes.palettes}>
           {InitialPalettes.map(p => (
             <PaletteInfo
               key={p.id}

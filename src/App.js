@@ -8,6 +8,7 @@ import PaletteList from "./PaletteList";
 import SingleColor from "./SingleColor";
 
 import "./App.css";
+import CreatePalette from "./CreatePalette";
 
 class App extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class App extends React.Component {
               <PaletteList InitialPalettes={InitialPalettes} {...routerProps} />
             )}
           />
+          <Route exact path="/palette/new" render={() => <CreatePalette />} />
           <Route
             exact
             path="/palette/:id"

@@ -17,7 +17,13 @@ export default {
   nav: {
     width: "100%",
     display: "flex",
+    alignItems: "center",
     justifyContent: "space-between"
+  },
+  navLink: {
+    color: "white",
+    fontSize: "1rem",
+    textDecoration: "none"
   },
   palettes: {
     boxSizing: "border-box",
