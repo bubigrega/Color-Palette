@@ -12,10 +12,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Button from "@material-ui/core/Button";
 import { SketchPicker } from "react-color";
+import DraggableColorBox from "./DraggableColorBox";
+import TextField from "@material-ui/core/TextField";
+import useForm from "react-hook-form";
 
-import ColorBox from "./ColorBox";
-
-const drawerWidth = 280;
+const drawerWidth = 400;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,12 +58,12 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    marginLeft: -drawerWidth
+    marginLeft: -drawerWidth,
+    height: `calc(100vh - ${theme.spacing(3)}px)`
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
@@ -78,8 +79,8 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center"
   },
-  mainColors: {
-    height: "100vh",
+  colorBoxes: {
+    height: "100%",
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
     gridTemplateRows: "repeat(4, 1fr)"
@@ -89,7 +90,10 @@ const useStyles = makeStyles(theme => ({
 const CreatePalette = props => {
   const [open, setOpen] = useState(true);
   const [color, setColor] = useState("red");
-  const [pickedColors, setPickedColors] = useState(["red", "blue"]);
+  const [pickedColors, setPickedColors] = useState([]);
+  const { register, handleSubmit, errors, reset } = useForm({
+    mode: "onBlur"
+  });
   const classes = useStyles();
 
   const handleDrawerOpen = () => {
@@ -102,8 +106,17 @@ const CreatePalette = props => {
 
   const handelChangeColor = newColor => setColor(newColor.hex);
 
-  const handelAddColor = () => setPickedColors([...pickedColors, color]);
-
+  const handelAddColor = data => {
+    setPickedColors([
+      ...pickedColors,
+      {
+        color,
+        name: data.colorName
+      }
+    ]);
+    reset("colorName");
+  };
+  console.log(errors);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -145,34 +158,63 @@ const CreatePalette = props => {
         <Divider />
         <div className={classes.drawerLayout}>
           <Typography variant="h4">Design Palette</Typography>
+          <div>
+            <Button variant="contained" color="secondary">
+              Remove Palett
+            </Button>
+            <Button variant="contained" color="primary">
+              Pick Random
+            </Button>
+          </div>
           <SketchPicker
             width={drawerWidth - 20}
             color={color}
             onChangeComplete={handelChangeColor}
           />
-          <Button
-            fullWidth
-            size="large"
-            variant="contained"
-            color="primary"
-            style={{ backgroundColor: color }}
-            onClick={handelAddColor}
-          >
-            Add Color
-          </Button>
+          <form onSubmit={handleSubmit(handelAddColor)}>
+            <TextField
+              variant="filled"
+              fullWidth
+              margin="none"
+              error={!!errors.colorName}
+              helperText={errors.colorName && `${errors.colorName.message}`}
+              label="Color name"
+              id="color-name"
+              name="colorName"
+              inputRef={register({
+                required: "Color name is required",
+                validate: value => {
+                  return (
+                    pickedColors.find(c => c.color === value) === undefined ||
+                    "Color already picked"
+                  );
+                }
+              })}
+            />
+            <Button
+              fullWidth
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              style={{ backgroundColor: color }}
+            >
+              Add Color
+            </Button>
+          </form>
         </div>
       </Drawer>
       <main
-        className={clsx(classes.content, classes.mainColors, {
+        className={clsx(classes.content, {
           [classes.contentShift]: open
         })}
       >
-        <div className={classes.drawerHeader}></div>
-        {/* <div className={classes.mainColors}> */}
-        {pickedColors.map((c, i) => (
-          <ColorBox key={i} background={c} />
-        ))}
-        {/* </div> */}
+        <div className={classes.drawerHeader} />
+        <div className={classes.colorBoxes}>
+          {pickedColors.map((c, i) => (
+            <DraggableColorBox key={i} color={c.color} colorName={c.color} />
+          ))}
+        </div>
       </main>
     </div>
   );
