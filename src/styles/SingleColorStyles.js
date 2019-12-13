@@ -2,7 +2,8 @@ export default {
   root: {
     height: "100vh",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    overflow: "hidden"
   },
   colorsGrid: {
     flexGrow: "1",

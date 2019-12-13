@@ -13,10 +13,14 @@ import CreatePalette from "./CreatePalette";
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      palettes: InitialPalettes
+    };
     this.pickColorVariants = this.pickColorVariants.bind(this);
+    this.addPalette = this.addPalette.bind(this);
   }
   pickPalette(id) {
-    return create(InitialPalettes.find(p => p.id === id));
+    return create(this.state.palettes.find(p => p.id === id));
   }
   pickColorVariants(paletteId, colorId) {
     let colorVariants = [];
@@ -25,6 +29,9 @@ class App extends React.Component {
       colorVariants.push(palette[item].find(c => c.id === colorId));
     }
     return colorVariants;
+  }
+  addPalette(palette) {
+    this.setState(state => ({ palettes: [...state.palettes, palette] }));
   }
   render() {
     return (
@@ -35,10 +42,16 @@ class App extends React.Component {
             exact
             path="/"
             render={routerProps => (
-              <PaletteList InitialPalettes={InitialPalettes} {...routerProps} />
+              <PaletteList palettes={this.state.palettes} {...routerProps} />
             )}
           />
-          <Route exact path="/palette/new" render={() => <CreatePalette />} />
+          <Route
+            exact
+            path="/palette/new"
+            render={routerProps => (
+              <CreatePalette {...routerProps} addPalette={this.addPalette} />
+            )}
+          />
           <Route
             exact
             path="/palette/:id"

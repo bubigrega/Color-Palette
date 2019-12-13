@@ -8,19 +8,19 @@ const useStyles = makeStyles(styles);
 
 const PaletteList = props => {
   const classes = useStyles();
-  const { InitialPalettes } = props;
+  const { palettes } = props;
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <nav className={classes.nav}>
           <h1>React Colors</h1>
-          <Link className={classes.navLink} exact to="/palette/new">
+          <Link className={classes.navLink} to="/palette/new">
             Create new
           </Link>
         </nav>
         <div className={classes.palettes}>
-          {InitialPalettes.map(p => (
+          {palettes.map(p => (
             <PaletteInfo
               key={p.id}
               {...p}

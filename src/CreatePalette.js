@@ -11,10 +11,11 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Button from "@material-ui/core/Button";
-import { SketchPicker } from "react-color";
+import { ChromePicker } from "react-color";
 import DraggableColorBox from "./DraggableColorBox";
 import TextField from "@material-ui/core/TextField";
 import useForm from "react-hook-form";
+import { RHFInput } from "react-hook-form-input";
 
 const drawerWidth = 400;
 
@@ -89,10 +90,12 @@ const useStyles = makeStyles(theme => ({
 
 const CreatePalette = props => {
   const [open, setOpen] = useState(true);
-  const [color, setColor] = useState("red");
   const [pickedColors, setPickedColors] = useState([]);
-  const { register, handleSubmit, errors, reset } = useForm({
-    mode: "onBlur"
+  const { register, handleSubmit, errors, reset, setValue, watch } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      chromePicker: "#00ff00"
+    }
   });
   const classes = useStyles();
 
@@ -104,19 +107,27 @@ const CreatePalette = props => {
     setOpen(false);
   };
 
-  const handelChangeColor = newColor => setColor(newColor.hex);
-
   const handelAddColor = data => {
     setPickedColors([
       ...pickedColors,
       {
-        color,
+        color: data.chromePicker,
         name: data.colorName
       }
     ]);
-    reset("colorName");
+    reset();
   };
-  console.log(errors);
+
+  const handleSavePalette = () => {
+    const paletteName = "New Palette";
+    const newPalette = {
+      paletteName,
+      id: paletteName.toLowerCase().replace(/ /g, "-"),
+      colors: pickedColors
+    };
+    props.addPalette(newPalette);
+    props.history.push("/");
+  };
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -139,6 +150,7 @@ const CreatePalette = props => {
           <Typography variant="h6" noWrap>
             pick color
           </Typography>
+          <Button onClick={handleSavePalette}>Save Palette</Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -160,35 +172,49 @@ const CreatePalette = props => {
           <Typography variant="h4">Design Palette</Typography>
           <div>
             <Button variant="contained" color="secondary">
-              Remove Palett
+              Remove Colors
             </Button>
             <Button variant="contained" color="primary">
-              Pick Random
+              Pick Random Color
             </Button>
           </div>
-          <SketchPicker
-            width={drawerWidth - 20}
-            color={color}
-            onChangeComplete={handelChangeColor}
-          />
           <form onSubmit={handleSubmit(handelAddColor)}>
+            <RHFInput
+              as={
+                <ChromePicker
+                  color={watch("chromePicker")}
+                  onChangeComplete={value =>
+                    setValue("chromePicker", value.hex)
+                  }
+                />
+              }
+              name="chromePicker"
+              register={register({
+                validate: value =>
+                  pickedColors.find(c => c.color === value) === undefined ||
+                  "Color already picked"
+              })}
+              setValue={setValue}
+              mode={"onChange"}
+            />
             <TextField
               variant="filled"
               fullWidth
               margin="none"
-              error={!!errors.colorName}
-              helperText={errors.colorName && `${errors.colorName.message}`}
+              error={!!errors.colorName || !!errors.chromePicker}
+              helperText={
+                (errors.colorName && `${errors.colorName.message}`) ||
+                (errors.chromePicker && `${errors.chromePicker.message}`)
+              }
               label="Color name"
               id="color-name"
               name="colorName"
               inputRef={register({
                 required: "Color name is required",
-                validate: value => {
-                  return (
-                    pickedColors.find(c => c.color === value) === undefined ||
-                    "Color already picked"
-                  );
-                }
+                validate: value =>
+                  pickedColors.find(
+                    c => c.name.toLowerCase() === value.toLowerCase()
+                  ) === undefined || "Color name taken"
               })}
             />
             <Button
@@ -197,7 +223,7 @@ const CreatePalette = props => {
               size="large"
               variant="contained"
               color="primary"
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: watch("chromePicker") }}
             >
               Add Color
             </Button>
@@ -212,7 +238,7 @@ const CreatePalette = props => {
         <div className={classes.drawerHeader} />
         <div className={classes.colorBoxes}>
           {pickedColors.map((c, i) => (
-            <DraggableColorBox key={i} color={c.color} colorName={c.color} />
+            <DraggableColorBox key={i} color={c.color} colorName={c.name} />
           ))}
         </div>
       </main>

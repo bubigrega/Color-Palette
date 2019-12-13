@@ -37,7 +37,6 @@ class Palette extends Component {
         id={c.id}
       />
     ));
-    console.log(classes);
     return (
       <div className={classes.palette}>
         <Navbar
