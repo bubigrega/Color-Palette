@@ -11,11 +11,11 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import Button from "@material-ui/core/Button";
-import { ChromePicker } from "react-color";
-import DraggableColorBox from "./DraggableColorBox";
 import TextField from "@material-ui/core/TextField";
 import useForm from "react-hook-form";
-import { RHFInput } from "react-hook-form-input";
+import ColorPickerForm from "./ColorPickerForm";
+import DragableColorList from "./DragableColorList";
+import { arrayMove } from "react-sortable-hoc";
 
 const drawerWidth = 400;
 
@@ -79,24 +79,17 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center"
-  },
-  colorBoxes: {
-    height: "100%",
-    display: "grid",
-    gridTemplateColumns: "repeat(5, 1fr)",
-    gridTemplateRows: "repeat(4, 1fr)"
   }
 }));
 
 const CreatePalette = props => {
   const [open, setOpen] = useState(true);
-  const [pickedColors, setPickedColors] = useState([]);
-  const { register, handleSubmit, errors, reset, setValue, watch } = useForm({
-    mode: "onBlur",
-    defaultValues: {
-      chromePicker: "#00ff00"
-    }
-  });
+  const [pickedColors, setPickedColors] = useState([
+    { color: "#0000ff", name: "Blue" },
+    { color: "#ff0000", name: "Red" },
+    { color: "#00ff00", name: "Green" }
+  ]);
+  const { register, handleSubmit, errors } = useForm();
   const classes = useStyles();
 
   const handleDrawerOpen = () => {
@@ -111,15 +104,17 @@ const CreatePalette = props => {
     setPickedColors([
       ...pickedColors,
       {
-        color: data.chromePicker,
+        color: data.chromePicker.hex,
         name: data.colorName
       }
     ]);
-    reset();
+  };
+  const handleDeleteColor = name => {
+    setPickedColors(pickedColors.filter(c => c.name !== name));
   };
 
-  const handleSavePalette = () => {
-    const paletteName = "New Palette";
+  const handleSavePalette = data => {
+    const paletteName = data.paletteName;
     const newPalette = {
       paletteName,
       id: paletteName.toLowerCase().replace(/ /g, "-"),
@@ -150,7 +145,23 @@ const CreatePalette = props => {
           <Typography variant="h6" noWrap>
             pick color
           </Typography>
-          <Button onClick={handleSavePalette}>Save Palette</Button>
+          <form name="savePalette" onSubmit={handleSubmit(handleSavePalette)}>
+            <TextField
+              id="paletteName"
+              name="paletteName"
+              inputRef={register({
+                required: "Name is required",
+                validate: value =>
+                  props.palettes.every(p => p.paletteName !== value) ||
+                  "Palette name used"
+              })}
+              error={!!errors.paletteName}
+              helperText={errors.paletteName && `${errors.paletteName.message}`}
+            />
+            <Button variant="contained" color="secondary" type="submit">
+              Save Palette
+            </Button>
+          </form>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -170,64 +181,10 @@ const CreatePalette = props => {
         <Divider />
         <div className={classes.drawerLayout}>
           <Typography variant="h4">Design Palette</Typography>
-          <div>
-            <Button variant="contained" color="secondary">
-              Remove Colors
-            </Button>
-            <Button variant="contained" color="primary">
-              Pick Random Color
-            </Button>
-          </div>
-          <form onSubmit={handleSubmit(handelAddColor)}>
-            <RHFInput
-              as={
-                <ChromePicker
-                  color={watch("chromePicker")}
-                  onChangeComplete={value =>
-                    setValue("chromePicker", value.hex)
-                  }
-                />
-              }
-              name="chromePicker"
-              register={register({
-                validate: value =>
-                  pickedColors.find(c => c.color === value) === undefined ||
-                  "Color already picked"
-              })}
-              setValue={setValue}
-              mode={"onChange"}
-            />
-            <TextField
-              variant="filled"
-              fullWidth
-              margin="none"
-              error={!!errors.colorName || !!errors.chromePicker}
-              helperText={
-                (errors.colorName && `${errors.colorName.message}`) ||
-                (errors.chromePicker && `${errors.chromePicker.message}`)
-              }
-              label="Color name"
-              id="color-name"
-              name="colorName"
-              inputRef={register({
-                required: "Color name is required",
-                validate: value =>
-                  pickedColors.find(
-                    c => c.name.toLowerCase() === value.toLowerCase()
-                  ) === undefined || "Color name taken"
-              })}
-            />
-            <Button
-              fullWidth
-              type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              style={{ backgroundColor: watch("chromePicker") }}
-            >
-              Add Color
-            </Button>
-          </form>
+          <ColorPickerForm
+            handelAddColor={handelAddColor}
+            pickedColors={pickedColors}
+          />
         </div>
       </Drawer>
       <main
@@ -236,11 +193,16 @@ const CreatePalette = props => {
         })}
       >
         <div className={classes.drawerHeader} />
-        <div className={classes.colorBoxes}>
-          {pickedColors.map((c, i) => (
-            <DraggableColorBox key={i} color={c.color} colorName={c.name} />
-          ))}
-        </div>
+        {/* <div className={classes.colorBoxes}> */}
+        <DragableColorList
+          onSortEnd={({ oldIndex, newIndex }) => {
+            setPickedColors(arrayMove(pickedColors, oldIndex, newIndex));
+          }}
+          axis="xy"
+          handleDeleteColor={handleDeleteColor}
+          pickedColors={pickedColors}
+        />
+        {/* </div> */}
       </main>
     </div>
   );

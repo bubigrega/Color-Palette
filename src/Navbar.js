@@ -41,7 +41,7 @@ class Navbar extends Component {
           <Toolbar>
             <Link className={classes.link} to="/">
               <Typography variant="h5" className={classes.navLogo}>
-                colorpalette
+                All Palettes
               </Typography>
             </Link>
             <Typography variant="h3" className={classes.slider}>

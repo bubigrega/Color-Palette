@@ -12,12 +12,8 @@ const Footer = props => {
     <AppBar position="sticky" className={classes.root}>
       <Toolbar>
         <Typography variant="h6" className={classes.rightText}>
-          {`${emoji} ${name}`}
-          {colorName ? (
-            <span className={classes.colorName}> {colorName}</span>
-          ) : (
-            ""
-          )}
+          {emoji && emoji} {name && name}
+          {colorName && <span className={classes.colorName}> {colorName}</span>}
         </Typography>
       </Toolbar>
     </AppBar>
