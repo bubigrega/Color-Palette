@@ -8,14 +8,14 @@ const useStyles = makeStyles({
     height: "100%",
     display: "grid",
     gridTemplateColumns: "repeat(5, 1fr)",
-    gridTemplateRows: "repeat(4, 1fr)"
+    gridTemplateRows: "repeat(4, 1fr)",
+    overflow: "hidden"
   }
 });
 
 const DragableColorList = SortableContainer(
   ({ pickedColors, handleDeleteColor }) => {
     const classes = useStyles();
-    console.log(classes);
     return (
       <div className={classes.colorBoxes}>
         {pickedColors.map((c, i) => (

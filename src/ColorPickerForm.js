@@ -5,7 +5,12 @@ import { ChromePicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
 import { RHFInput } from "react-hook-form-input";
 
-function ColorPickerForm(props) {
+const ColorPickerForm = ({
+  handelAddColor,
+  handleClearPalette,
+  pickedColors,
+  palettes
+}) => {
   const { register, handleSubmit, errors, setValue, watch, reset } = useForm({
     mode: "onBlur",
     defaultValues: {
@@ -14,16 +19,31 @@ function ColorPickerForm(props) {
   });
 
   const onSubmit = data => {
-    props.handelAddColor(data);
+    handelAddColor(data);
     reset();
+  };
+  const addRandomColor = () => {
+    let allColors = [];
+    for (let palette of palettes) {
+      let colors = palette.colors;
+      for (let color of colors) {
+        allColors.push(color);
+      }
+    }
+    let newColor = allColors[Math.floor(Math.random() * allColors.length)];
+    setValue("chromePicker", { hex: newColor.color });
   };
   return (
     <form name="addColor" onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <Button variant="contained" color="secondary">
+        <Button
+          onClick={handleClearPalette}
+          variant="contained"
+          color="secondary"
+        >
           Remove Colors
         </Button>
-        <Button variant="contained" color="primary">
+        <Button onClick={addRandomColor} variant="contained" color="primary">
           Pick Random Color
         </Button>
       </div>
@@ -38,9 +58,8 @@ function ColorPickerForm(props) {
         name="chromePicker"
         register={register({
           validate: value => {
-            console.log(value);
             return (
-              props.pickedColors.every(c => c.color !== value.hex) ||
+              pickedColors.every(c => c.color !== value.hex) ||
               "Color already picked"
             );
           }
@@ -63,7 +82,7 @@ function ColorPickerForm(props) {
         inputRef={register({
           required: "Color name is required",
           validate: value =>
-            props.pickedColors.every(
+            pickedColors.every(
               c => c.name.toLowerCase() !== value.toLowerCase()
             ) || "Color name taken"
         })}
@@ -80,6 +99,6 @@ function ColorPickerForm(props) {
       </Button>
     </form>
   );
-}
+};
 
 export default ColorPickerForm;

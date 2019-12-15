@@ -15,7 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import useForm from "react-hook-form";
 import ColorPickerForm from "./ColorPickerForm";
 import DragableColorList from "./DragableColorList";
-import { arrayMove } from "react-sortable-hoc";
+import { arrayMove } from "array-move";
 
 const drawerWidth = 400;
 
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     marginLeft: -drawerWidth,
-    height: `calc(100vh - ${theme.spacing(3)}px)`
+    height: `calc(100vh - 64px)`
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
@@ -84,11 +84,12 @@ const useStyles = makeStyles(theme => ({
 
 const CreatePalette = props => {
   const [open, setOpen] = useState(true);
-  const [pickedColors, setPickedColors] = useState([
-    { color: "#0000ff", name: "Blue" },
-    { color: "#ff0000", name: "Red" },
-    { color: "#00ff00", name: "Green" }
-  ]);
+  const [pickedColors, setPickedColors] = useState(props.palettes[0].colors);
+  //   [
+  //   { color: "#0000ff", name: "Blue" },
+  //   { color: "#ff0000", name: "Red" },
+  //   { color: "#00ff00", name: "Green" }
+  // ]);
   const { register, handleSubmit, errors } = useForm();
   const classes = useStyles();
 
@@ -123,6 +124,9 @@ const CreatePalette = props => {
     props.addPalette(newPalette);
     props.history.push("/");
   };
+
+  const handleClearPalette = () => setPickedColors([]);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -184,6 +188,8 @@ const CreatePalette = props => {
           <ColorPickerForm
             handelAddColor={handelAddColor}
             pickedColors={pickedColors}
+            handleClearPalette={handleClearPalette}
+            palettes={props.palettes}
           />
         </div>
       </Drawer>
@@ -193,7 +199,6 @@ const CreatePalette = props => {
         })}
       >
         <div className={classes.drawerHeader} />
-        {/* <div className={classes.colorBoxes}> */}
         <DragableColorList
           onSortEnd={({ oldIndex, newIndex }) => {
             setPickedColors(arrayMove(pickedColors, oldIndex, newIndex));
@@ -202,7 +207,6 @@ const CreatePalette = props => {
           handleDeleteColor={handleDeleteColor}
           pickedColors={pickedColors}
         />
-        {/* </div> */}
       </main>
     </div>
   );
