@@ -150,7 +150,7 @@ const ColorPickerForm = ({
           backgroundColor: colorsAreFull ? "gray" : watch("chromePicker").hex
         }}
       >
-        {colorsAreFull ? "Color Palette Full" : "Add Color"}
+        {colorsAreFull ? "Palette Full" : "Add Color"}
       </Button>
     </form>
   );

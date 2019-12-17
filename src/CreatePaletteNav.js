@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -7,9 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import useForm from "react-hook-form";
 import { makeStyles } from "@material-ui/core/styles";
+import SavePaletteDialog from "./SavePaletteDialog";
 
 const drawerWidth = 400;
 
@@ -17,6 +16,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
     alignItems: "center",
+    width: "100%",
     justifyContent: "space-between"
   },
   appBar: {
@@ -51,8 +51,16 @@ const CreatePaletteNav = ({
   handleSavePalette,
   palettes
 }) => {
-  const { register, handleSubmit, errors } = useForm();
+  const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
+
+  const onClose = () => {
+    setOpenDialog(!openDialog);
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(!openDialog);
+  };
 
   return (
     <AppBar
@@ -61,7 +69,7 @@ const CreatePaletteNav = ({
         [classes.appBarShift]: open
       })}
     >
-      <Toolbar className={classes.root}>
+      <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -71,31 +79,29 @@ const CreatePaletteNav = ({
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h5" noWrap>
-          Create Palette
-        </Typography>
-        <form name="savePalette" onSubmit={handleSubmit(handleSavePalette)}>
-          <TextField
-            id="paletteName"
-            name="paletteName"
-            inputRef={register({
-              required: "Name is required",
-              validate: value =>
-                palettes.every(p => p.paletteName !== value) ||
-                "Palette name used"
-            })}
-            error={!!errors.paletteName}
-            helperText={errors.paletteName && `${errors.paletteName.message}`}
+        <div className={classes.root}>
+          <Typography variant="h5" noWrap>
+            Create Palette
+          </Typography>
+          <SavePaletteDialog
+            open={openDialog}
+            handleSavePalette={handleSavePalette}
+            palettes={palettes}
+            onClose={onClose}
           />
-          <Button variant="contained" color="secondary" type="submit">
-            Save
-          </Button>
-          <Link to="/" className={classes.link}>
-            <Button variant="contained" color="secondary">
-              Go Back
+          <div>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleOpenDialog}
+            >
+              Save Palette
             </Button>
-          </Link>
-        </form>
+            <Link to="/" className={classes.link}>
+              <Button variant="contained">Go Back</Button>
+            </Link>
+          </div>
+        </div>
       </Toolbar>
     </AppBar>
   );
