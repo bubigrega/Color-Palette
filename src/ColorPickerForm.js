@@ -1,55 +1,102 @@
-import React from "react";
+import React, { useRef } from "react";
 import useForm from "react-hook-form";
 import Button from "@material-ui/core/Button";
 import { ChromePicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
 import { RHFInput } from "react-hook-form-input";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column"
+  },
+  picker: {
+    width: "90% !important",
+    margin: "0.3rem auto"
+  },
+  buttons: {
+    width: "100%"
+  },
+  topButton: {
+    width: "50%"
+  },
+  button: {
+    fontSize: "1.8rem"
+  }
+});
 
 const ColorPickerForm = ({
   handelAddColor,
   handleClearPalette,
   pickedColors,
-  palettes
+  palettes,
+  colorsAreFull
 }) => {
-  const { register, handleSubmit, errors, setValue, watch, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setValue,
+    watch,
+    reset,
+    triggerValidation
+  } = useForm({
     mode: "onBlur",
     defaultValues: {
       chromePicker: { hex: "#0000ff" }
     }
   });
 
+  const classes = useStyles();
+  const colorNameRef = useRef();
+  const clearColorPalette = () => {
+    handleClearPalette();
+    reset();
+  };
   const onSubmit = data => {
     handelAddColor(data);
     reset();
   };
   const addRandomColor = () => {
-    let allColors = [];
-    for (let palette of palettes) {
-      let colors = palette.colors;
-      for (let color of colors) {
-        allColors.push(color);
-      }
-    }
+    let allColors = palettes.map(p => p.colors).flat();
     let newColor = allColors[Math.floor(Math.random() * allColors.length)];
     setValue("chromePicker", { hex: newColor.color });
+    setValue("colorName", newColor.name);
+    colorNameRef.current.focus();
+    triggerValidation();
   };
+
   return (
-    <form name="addColor" onSubmit={handleSubmit(onSubmit)}>
-      <div>
+    <form
+      className={classes.root}
+      name="addColor"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className={classes.buttons}>
         <Button
-          onClick={handleClearPalette}
+          className={classes.topButton}
+          onClick={clearColorPalette}
           variant="contained"
           color="secondary"
         >
           Remove Colors
         </Button>
-        <Button onClick={addRandomColor} variant="contained" color="primary">
-          Pick Random Color
+        <Button
+          className={classes.topButton}
+          disabled={colorsAreFull}
+          onClick={addRandomColor}
+          variant="contained"
+          color="primary"
+        >
+          Pick Random
         </Button>
       </div>
       <RHFInput
         as={
           <ChromePicker
+            className={classes.picker}
             color={watch("chromePicker")}
             onChangeComplete={value => setValue("chromePicker", value)}
             disableAlpha
@@ -79,23 +126,31 @@ const ColorPickerForm = ({
         label="Color name"
         id="color-name"
         name="colorName"
-        inputRef={register({
-          required: "Color name is required",
-          validate: value =>
-            pickedColors.every(
-              c => c.name.toLowerCase() !== value.toLowerCase()
-            ) || "Color name taken"
-        })}
+        spellCheck={false}
+        inputRef={e => {
+          register(e, {
+            required: "Color name is required",
+            validate: value =>
+              pickedColors.every(
+                c => c.name.toLowerCase() !== value.toLowerCase()
+              ) || "Color name taken"
+          });
+          colorNameRef.current = e;
+        }}
       />
       <Button
         fullWidth
+        disabled={colorsAreFull}
+        className={classes.button}
+        color="primary"
         type="submit"
         size="large"
         variant="contained"
-        color="primary"
-        style={{ backgroundColor: watch("chromePicker") }}
+        style={{
+          backgroundColor: colorsAreFull ? "gray" : watch("chromePicker").hex
+        }}
       >
-        Add Color
+        {colorsAreFull ? "Color Palette Full" : "Add Color"}
       </Button>
     </form>
   );

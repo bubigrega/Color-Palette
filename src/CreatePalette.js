@@ -3,19 +3,14 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import useForm from "react-hook-form";
 import ColorPickerForm from "./ColorPickerForm";
+import arrayMove from "array-move";
 import DragableColorList from "./DragableColorList";
-import { arrayMove } from "array-move";
+import CreatePaletteNav from "./CreatePaletteNav";
 
 const drawerWidth = 400;
 
@@ -75,6 +70,7 @@ const useStyles = makeStyles(theme => ({
   },
   drawerLayout: {
     height: "100%",
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -82,15 +78,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const CreatePalette = props => {
+const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
   const [open, setOpen] = useState(true);
-  const [pickedColors, setPickedColors] = useState(props.palettes[0].colors);
+  const [pickedColors, setPickedColors] = useState(palettes[0].colors);
   //   [
   //   { color: "#0000ff", name: "Blue" },
   //   { color: "#ff0000", name: "Red" },
   //   { color: "#00ff00", name: "Green" }
   // ]);
-  const { register, handleSubmit, errors } = useForm();
+  let colorsAreFull = pickedColors.length >= maxColors;
   const classes = useStyles();
 
   const handleDrawerOpen = () => {
@@ -121,8 +117,8 @@ const CreatePalette = props => {
       id: paletteName.toLowerCase().replace(/ /g, "-"),
       colors: pickedColors
     };
-    props.addPalette(newPalette);
-    props.history.push("/");
+    addPalette(newPalette);
+    history.push("/");
   };
 
   const handleClearPalette = () => setPickedColors([]);
@@ -130,44 +126,13 @@ const CreatePalette = props => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, open && classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            pick color
-          </Typography>
-          <form name="savePalette" onSubmit={handleSubmit(handleSavePalette)}>
-            <TextField
-              id="paletteName"
-              name="paletteName"
-              inputRef={register({
-                required: "Name is required",
-                validate: value =>
-                  props.palettes.every(p => p.paletteName !== value) ||
-                  "Palette name used"
-              })}
-              error={!!errors.paletteName}
-              helperText={errors.paletteName && `${errors.paletteName.message}`}
-            />
-            <Button variant="contained" color="secondary" type="submit">
-              Save Palette
-            </Button>
-          </form>
-        </Toolbar>
-      </AppBar>
+      <CreatePaletteNav
+        handleDrawerOpen={handleDrawerOpen}
+        open={open}
+        classes={classes}
+        handleSavePalette={handleSavePalette}
+        palettes={palettes}
+      />
       <Drawer
         className={classes.drawer}
         variant="persistent"
@@ -184,12 +149,15 @@ const CreatePalette = props => {
         </div>
         <Divider />
         <div className={classes.drawerLayout}>
-          <Typography variant="h4">Design Palette</Typography>
+          <Typography variant="h4" gutterBottom>
+            Design Palette
+          </Typography>
           <ColorPickerForm
             handelAddColor={handelAddColor}
             pickedColors={pickedColors}
             handleClearPalette={handleClearPalette}
-            palettes={props.palettes}
+            palettes={palettes}
+            colorsAreFull={colorsAreFull}
           />
         </div>
       </Drawer>

@@ -11,7 +11,8 @@ const styles = {
       paddingBottom: "0.3rem",
       paddingRight: "0.2rem",
       transform: "scale(2.5)",
-      transition: "all 0.3s ease-in-out"
+      transition: "all 0.3s ease-in-out",
+      cursor: "pointer"
     }
   },
   boxContent: {
@@ -26,7 +27,7 @@ const styles = {
     left: "0",
     textTransform: "uppercase",
     letterSpacing: "1px",
-    fontSize: "1rem"
+    fontSize: "0.8rem"
   }
 };
 
