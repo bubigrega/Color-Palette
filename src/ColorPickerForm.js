@@ -4,9 +4,10 @@ import Button from "@material-ui/core/Button";
 import { ChromePicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
 import { RHFInput } from "react-hook-form-input";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
+import chroma from "chroma-js";
 
-const useStyles = makeStyles({
+const styles = {
   root: {
     width: "100%",
     display: "flex",
@@ -25,31 +26,25 @@ const useStyles = makeStyles({
   button: {
     fontSize: "1.8rem"
   }
-});
+};
 
-const ColorPickerForm = ({
-  handelAddColor,
-  handleClearPalette,
-  pickedColors,
-  palettes,
-  colorsAreFull
-}) => {
+const ColorPickerForm = props => {
   const {
-    register,
-    handleSubmit,
-    errors,
-    setValue,
-    watch,
-    reset,
-    triggerValidation
-  } = useForm({
+    handelAddColor,
+    handleClearPalette,
+    pickedColors,
+    palettes,
+    colorsAreFull,
+    classes
+  } = props;
+
+  const { register, handleSubmit, errors, setValue, watch, reset } = useForm({
     mode: "onBlur",
     defaultValues: {
       chromePicker: { hex: "#0000ff" }
     }
   });
 
-  const classes = useStyles();
   const colorNameRef = useRef();
   const clearColorPalette = () => {
     handleClearPalette();
@@ -62,10 +57,9 @@ const ColorPickerForm = ({
   const addRandomColor = () => {
     let allColors = palettes.map(p => p.colors).flat();
     let newColor = allColors[Math.floor(Math.random() * allColors.length)];
-    setValue("chromePicker", { hex: newColor.color });
-    setValue("colorName", newColor.name);
+    setValue("colorName", newColor.name, true);
+    setValue("chromePicker", { hex: newColor.color }, true);
     colorNameRef.current.focus();
-    triggerValidation();
   };
 
   return (
@@ -147,7 +141,11 @@ const ColorPickerForm = ({
         size="large"
         variant="contained"
         style={{
-          backgroundColor: colorsAreFull ? "gray" : watch("chromePicker").hex
+          backgroundColor: colorsAreFull ? "gray" : watch("chromePicker").hex,
+          color:
+            chroma(watch("chromePicker").hex).luminance() >= 0.6
+              ? "black"
+              : "white"
         }}
       >
         {colorsAreFull ? "Palette Full" : "Add Color"}
@@ -156,4 +154,4 @@ const ColorPickerForm = ({
   );
 };
 
-export default ColorPickerForm;
+export default withStyles(styles)(ColorPickerForm);

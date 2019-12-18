@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -17,13 +17,14 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     width: "100%",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    height: "64px"
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-      height: "64px"
+      duration: theme.transitions.duration.leavingScreen
+      // height: "64px"
     })
   },
   appBarShift: {
@@ -42,6 +43,11 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     textDecoration: "none"
+  },
+  buttons: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
   }
 }));
 
@@ -51,16 +57,7 @@ const CreatePaletteNav = ({
   handleSavePalette,
   palettes
 }) => {
-  const [openDialog, setOpenDialog] = useState(false);
   const classes = useStyles();
-
-  const onClose = () => {
-    setOpenDialog(!openDialog);
-  };
-
-  const handleOpenDialog = () => {
-    setOpenDialog(!openDialog);
-  };
 
   return (
     <AppBar
@@ -83,20 +80,11 @@ const CreatePaletteNav = ({
           <Typography variant="h5" noWrap>
             Create Palette
           </Typography>
-          <SavePaletteDialog
-            open={openDialog}
-            handleSavePalette={handleSavePalette}
-            palettes={palettes}
-            onClose={onClose}
-          />
-          <div>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleOpenDialog}
-            >
-              Save Palette
-            </Button>
+          <div className={classes.buttons}>
+            <SavePaletteDialog
+              palettes={palettes}
+              handleSavePalette={handleSavePalette}
+            />
             <Link to="/" className={classes.link}>
               <Button variant="contained">Go Back</Button>
             </Link>

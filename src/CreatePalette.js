@@ -110,12 +110,11 @@ const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
     setPickedColors(pickedColors.filter(c => c.name !== name));
   };
 
-  const handleSavePalette = data => {
-    const paletteName = data.paletteName;
+  const handleSavePalette = (data, emoji) => {
     const newPalette = {
-      paletteName,
-      id: paletteName.toLowerCase().replace(/ /g, "-"),
-      colors: pickedColors
+      emoji: emoji.native,
+      colors: pickedColors,
+      ...data
     };
     addPalette(newPalette);
     history.push("/");
