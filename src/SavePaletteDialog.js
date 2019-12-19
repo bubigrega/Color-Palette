@@ -23,7 +23,6 @@ const SavePaletteDialog = props => {
   };
 
   const handleCloseName = data => {
-    console.log("caled");
     const paletteName = data.paletteName;
     setData({
       paletteName,
@@ -79,11 +78,11 @@ const SavePaletteDialog = props => {
           </DialogActions>
         </form>
       </Dialog>
-      <Dialog open={open === "emoji"}>
+      <Dialog open={open === "emoji"} onClose={handleClose}>
         <Picker
-          type="submit"
+          title="Pick palette emoji"
           native
-          showPreview={false}
+          showPreview={true}
           ref={register}
           onClick={emoji => {
             handleSavePalette(data, emoji);

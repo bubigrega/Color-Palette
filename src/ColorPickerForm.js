@@ -6,27 +6,7 @@ import TextField from "@material-ui/core/TextField";
 import { RHFInput } from "react-hook-form-input";
 import { withStyles } from "@material-ui/core/styles";
 import chroma from "chroma-js";
-
-const styles = {
-  root: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column"
-  },
-  picker: {
-    width: "90% !important",
-    margin: "0.3rem auto"
-  },
-  buttons: {
-    width: "100%"
-  },
-  topButton: {
-    width: "50%"
-  },
-  button: {
-    fontSize: "1.8rem"
-  }
-};
+import styles from "./styles/ColorPickerFormStyles";
 
 const ColorPickerForm = props => {
   const {
@@ -111,7 +91,7 @@ const ColorPickerForm = props => {
       <TextField
         variant="filled"
         fullWidth
-        margin="none"
+        margin="normal"
         error={!!errors.colorName || !!errors.chromePicker}
         helperText={
           (errors.colorName && errors.colorName.message) ||
