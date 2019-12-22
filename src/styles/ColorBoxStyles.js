@@ -64,7 +64,7 @@ export default {
     width: "100%",
     height: "100%",
     opacity: "0",
-    zIndex: "0",
+    zIndex: "-1",
     transition: "transform 0.6s ease-in-out",
     transform: "scale(0.1)"
   },
@@ -87,6 +87,7 @@ export default {
     color: "white",
     fontSize: "4rem",
     opacity: "0",
+    zIndex: "-1",
     transform: "scale(0.1)",
     "& h1": {
       fontWeight: "400",
@@ -96,7 +97,10 @@ export default {
       textAlign: "center",
       textTransform: "uppercase",
       padding: "1rem",
-      marginBottom: "0"
+      marginBottom: "0",
+      [sizes.down("sm")]: {
+        fontSize: "3.5rem"
+      }
     },
     "& p": {
       fontSize: "2rem",

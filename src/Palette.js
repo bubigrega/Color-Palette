@@ -29,7 +29,7 @@ class Palette extends Component {
     let allColors = colors[level].map(c => (
       <ColorBox
         show
-        key={c.name}
+        key={c.hex}
         background={c.hex}
         copyText={c[copyText]}
         name={c.name}

@@ -36,7 +36,7 @@ function SingleColor(props) {
       <div className={colorsGrid}>
         {pickShades(colors, colorId).map(c => (
           <ColorBox
-            key={c.name}
+            key={c.hex}
             show={false}
             name={c.name}
             background={c.hex}
