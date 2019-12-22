@@ -24,6 +24,7 @@ const PaletteList = props => {
             <PaletteInfo
               key={p.id}
               {...p}
+              handleDeletePalette={() => props.handleDeletePalette(p.id)}
               handleClick={() => props.history.push(`/palette/${p.id}`)}
             />
           ))}

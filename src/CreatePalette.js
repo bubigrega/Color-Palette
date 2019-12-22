@@ -18,11 +18,7 @@ const useStyles = makeStyles(stylesFun);
 const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
   const [open, setOpen] = useState(true);
   const [pickedColors, setPickedColors] = useState(palettes[0].colors);
-  //   [
-  //   { color: "#0000ff", name: "Blue" },
-  //   { color: "#ff0000", name: "Red" },
-  //   { color: "#00ff00", name: "Green" }
-  // ]);
+
   let colorsAreFull = pickedColors.length >= maxColors;
   const classes = useStyles();
 

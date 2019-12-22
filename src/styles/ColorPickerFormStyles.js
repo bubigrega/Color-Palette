@@ -1,3 +1,4 @@
+import sizes from "./mediaQueryHelper";
 export default {
   root: {
     width: "100%",
@@ -12,7 +13,10 @@ export default {
     width: "100%"
   },
   topButton: {
-    width: "50%"
+    width: "50%",
+    [sizes.down("sm")]: {
+      width: "100%"
+    }
   },
   button: {
     fontSize: "1.8rem"

@@ -7,6 +7,7 @@ import { RHFInput } from "react-hook-form-input";
 import { withStyles } from "@material-ui/core/styles";
 import chroma from "chroma-js";
 import styles from "./styles/ColorPickerFormStyles";
+import htmlColors from "./htmlColors";
 
 const ColorPickerForm = props => {
   const {
@@ -18,7 +19,15 @@ const ColorPickerForm = props => {
     classes
   } = props;
 
-  const { register, handleSubmit, errors, setValue, watch, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setValue,
+    watch,
+    reset,
+    triggerValidation
+  } = useForm({
     mode: "onBlur",
     defaultValues: {
       chromePicker: { hex: "#0000ff" }
@@ -35,11 +44,15 @@ const ColorPickerForm = props => {
     reset();
   };
   const addRandomColor = () => {
-    let allColors = palettes.map(p => p.colors).flat();
+    let allColors = palettes
+      .map(p => p.colors)
+      .flat()
+      .concat(htmlColors);
     let newColor = allColors[Math.floor(Math.random() * allColors.length)];
-    setValue("colorName", newColor.name, true);
-    setValue("chromePicker", { hex: newColor.color }, true);
+    setValue("colorName", newColor.name);
+    setValue("chromePicker", { hex: newColor.color });
     colorNameRef.current.focus();
+    triggerValidation();
   };
 
   return (

@@ -14,10 +14,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      palettes: InitialPalettes
+      palettes: JSON.parse(localStorage.getItem("palettes")) || InitialPalettes
     };
     this.pickColorVariants = this.pickColorVariants.bind(this);
     this.addPalette = this.addPalette.bind(this);
+    this.savePalettes = this.savePalettes.bind(this);
+    this.handleDeletePalette = this.handleDeletePalette.bind(this);
   }
   pickPalette(id) {
     return create(this.state.palettes.find(p => p.id === id));
@@ -31,7 +33,21 @@ class App extends React.Component {
     return colorVariants;
   }
   addPalette(palette) {
-    this.setState(state => ({ palettes: [...state.palettes, palette] }));
+    this.setState(
+      state => ({ palettes: [...state.palettes, palette] }),
+      () => {
+        this.savePalettes();
+      }
+    );
+  }
+  savePalettes() {
+    localStorage.setItem("palettes", JSON.stringify(this.state.palettes));
+  }
+  handleDeletePalette(id) {
+    this.setState(
+      s => ({ palettes: s.palettes.filter(p => p.id !== id) }),
+      () => this.savePalettes()
+    );
   }
   render() {
     return (
@@ -42,7 +58,11 @@ class App extends React.Component {
             exact
             path="/"
             render={routerProps => (
-              <PaletteList palettes={this.state.palettes} {...routerProps} />
+              <PaletteList
+                palettes={this.state.palettes}
+                {...routerProps}
+                handleDeletePalette={this.handleDeletePalette}
+              />
             )}
           />
           <Route

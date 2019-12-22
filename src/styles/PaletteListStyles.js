@@ -1,7 +1,8 @@
+import sizes from "./mediaQueryHelper";
 export default {
   root: {
     backgroundColor: "blue",
-    height: "100vh",
+    minHeight: "100vh",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "center",
@@ -12,7 +13,13 @@ export default {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    [sizes.down("sm")]: {
+      width: "60%"
+    },
+    [sizes.down("xs")]: {
+      width: "70%"
+    }
   },
   nav: {
     width: "100%",
@@ -31,6 +38,15 @@ export default {
     display: "grid",
     gridTemplateColumns: "repeat(3, 1fr)",
     gridRowGap: "0.5rem",
-    gridColumnGap: "1rem"
+    gridColumnGap: "1rem",
+    [sizes.down("md")]: {
+      gridTemplateColumns: "1fr 1fr"
+    },
+    [sizes.down("sm")]: {
+      gridTemplateColumns: "1fr 1fr"
+    },
+    [sizes.down("xs")]: {
+      gridTemplateColumns: "1fr"
+    }
   }
 };

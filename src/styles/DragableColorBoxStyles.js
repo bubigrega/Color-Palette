@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import sizes from "./mediaQueryHelper";
 
 export default {
   root: {
@@ -8,7 +9,10 @@ export default {
       paddingRight: "0.2rem",
       transform: "scale(2.5)",
       transition: "all 0.3s ease-in-out",
-      cursor: "pointer"
+      cursor: "pointer",
+      [sizes.down("sm")]: {
+        transform: "scale(1.5)"
+      }
     }
   },
   boxContent: {
@@ -23,6 +27,9 @@ export default {
     left: "0",
     textTransform: "uppercase",
     letterSpacing: "1px",
-    fontSize: "0.8rem"
+    fontSize: "0.8rem",
+    [sizes.down("sm")]: {
+      paddingBottom: "2px"
+    }
   }
 };

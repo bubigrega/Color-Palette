@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import sizes from "./mediaQueryHelper";
 
 export default {
   root: {
@@ -33,7 +34,10 @@ export default {
     left: "0",
     textTransform: "uppercase",
     letterSpacing: "1px",
-    fontSize: "12px"
+    fontSize: "12px",
+    [sizes.down("xs")]: {
+      paddingBottom: "2px"
+    }
   },
   copyButton: {
     color: props =>
@@ -68,7 +72,7 @@ export default {
     position: "absolute",
     opacity: "1",
     zIndex: "10",
-    transform: "scale(10)"
+    transform: "scale(50)"
   },
   copyMsg: {
     position: "fixed",

@@ -1,6 +1,8 @@
-import { DRAWER_WIDTH } from "../constants";
+import { DRAWER_WIDTH, DRAWER_WIDTH_MEDIUM } from "../constants";
+import sizes from "./mediaQueryHelper";
 
 const drawerWidth = DRAWER_WIDTH;
+const drawerWidthMedium = DRAWER_WIDTH_MEDIUM;
 
 export default theme => ({
   root: {
@@ -18,7 +20,10 @@ export default theme => ({
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen
-    })
+    }),
+    [sizes.down("sm")]: {
+      width: `calc(100% - ${drawerWidthMedium}px)`
+    }
   },
   menuButton: {
     marginRight: theme.spacing(2)
@@ -28,10 +33,16 @@ export default theme => ({
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0
+    flexShrink: 0,
+    [sizes.down("sm")]: {
+      width: drawerWidthMedium
+    }
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    [sizes.down("sm")]: {
+      width: drawerWidthMedium
+    }
   },
   drawerHeader: {
     display: "flex",
@@ -47,7 +58,10 @@ export default theme => ({
       duration: theme.transitions.duration.leavingScreen
     }),
     marginLeft: -drawerWidth,
-    height: `calc(100vh - 64px)`
+    height: `calc(100vh - 64px)`,
+    [sizes.down("sm")]: {
+      marginLeft: -drawerWidthMedium
+    }
   },
   contentShift: {
     transition: theme.transitions.create("margin", {

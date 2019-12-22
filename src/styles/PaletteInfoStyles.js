@@ -8,6 +8,10 @@ export default {
     overflow: "none",
     "&:hover": {
       cursor: "pointer"
+    },
+    "&:hover svg": {
+      opacity: "1",
+      transition: "all 0.5s ease-in-out"
     }
   },
   colors: {
@@ -36,5 +40,17 @@ export default {
   emoji: {
     fontSize: "1.2rem",
     marginLeft: "0.5rem"
+  },
+  deleteIcon: {
+    position: "absolute",
+    top: "0",
+    right: "0",
+    backgroundColor: "black",
+    color: "white",
+    opacity: "0",
+    zIndex: "10",
+    fontSize: "3rem",
+    padding: "0.4rem",
+    borderRadius: "3px"
   }
 };
