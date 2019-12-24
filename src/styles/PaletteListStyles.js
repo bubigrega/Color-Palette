@@ -1,7 +1,19 @@
 import sizes from "./mediaQueryHelper";
+import background from "./background.svg";
 export default {
+  "@global": {
+    ".fade-exit": {
+      opacity: 1
+    },
+    ".fade-exit-active": {
+      opacity: 0,
+      transition: "opacity 500ms ease-out"
+    }
+  },
   root: {
-    backgroundColor: "blue",
+    backgroundColor: "#2715EE",
+    /* background by SVGBackgrounds.com */
+    backgroundImage: `url(${background})`,
     minHeight: "100vh",
     display: "flex",
     alignItems: "flex-start",

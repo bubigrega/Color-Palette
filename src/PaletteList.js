@@ -2,6 +2,7 @@ import React from "react";
 import PaletteInfo from "./PaletteInfo";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styles from "./styles/PaletteListStyles";
 
 const useStyles = makeStyles(styles);
@@ -19,16 +20,18 @@ const PaletteList = props => {
             Create new
           </Link>
         </nav>
-        <div className={classes.palettes}>
+        <TransitionGroup className={classes.palettes}>
           {palettes.map(p => (
-            <PaletteInfo
-              key={p.id}
-              {...p}
-              handleDeletePalette={() => props.handleDeletePalette(p.id)}
-              handleClick={() => props.history.push(`/palette/${p.id}`)}
-            />
+            <CSSTransition key={p.id} classNames="fade" timeout={500}>
+              <PaletteInfo
+                key={p.id}
+                {...p}
+                handleDeletePalette={() => props.handleDeletePalette(p.id)}
+                handleClick={() => props.history.push(`/palette/${p.id}`)}
+              />
+            </CSSTransition>
           ))}
-        </div>
+        </TransitionGroup>
       </div>
     </div>
   );
