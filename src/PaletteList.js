@@ -25,6 +25,15 @@ const PaletteList = props => {
     props.handleDeletePalette(paletteToDelete.id);
   };
 
+  const handleAddPaletteToDelete = palette => {
+    setPaletteToDelete({ ...palette });
+    setOpen(true);
+  };
+
+  const handleChangePath = id => {
+    props.history.push(`/palette/${id}`);
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.container}>
@@ -39,7 +48,7 @@ const PaletteList = props => {
             Delete {paletteToDelete.paletteName} palette?
           </DialogTitle>
           <DialogContent>
-            <PaletteInfo {...paletteToDelete} show={false} />
+            <PaletteInfo palette={paletteToDelete} show={false} />
           </DialogContent>
           <DialogActions>
             <Button onClick={confirmDelete} variant="contained" color="primary">
@@ -59,13 +68,10 @@ const PaletteList = props => {
             <CSSTransition key={p.id} classNames="fade" timeout={500}>
               <PaletteInfo
                 key={p.id}
-                {...p}
+                palette={p}
                 show
-                handleDeletePalette={() => {
-                  setPaletteToDelete({ ...p });
-                  setOpen(true);
-                }}
-                handleClick={() => props.history.push(`/palette/${p.id}`)}
+                handleDeletePalette={handleAddPaletteToDelete}
+                handleChangePath={handleChangePath}
               />
             </CSSTransition>
           ))}
