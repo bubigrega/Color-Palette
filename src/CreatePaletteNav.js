@@ -40,7 +40,7 @@ const CreatePaletteNav = ({
         </IconButton>
         <div className={classes.root}>
           <Typography variant="h5" noWrap>
-            Create Palette
+            Create
           </Typography>
           <div className={classes.buttons}>
             <SavePaletteDialog
@@ -48,7 +48,7 @@ const CreatePaletteNav = ({
               handleSavePalette={handleSavePalette}
             />
             <Link to="/" className={classes.link}>
-              <Button variant="contained">Go Back</Button>
+              <Button variant="contained">Back</Button>
             </Link>
           </div>
         </div>

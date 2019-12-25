@@ -17,7 +17,7 @@ const useStyles = makeStyles(stylesFun);
 
 const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
   const [open, setOpen] = useState(true);
-  const [pickedColors, setPickedColors] = useState(palettes[0].colors);
+  const [pickedColors, setPickedColors] = useState([]);
 
   let colorsAreFull = pickedColors.length >= maxColors;
   const classes = useStyles();
@@ -104,6 +104,7 @@ const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
             setPickedColors(arrayMove(pickedColors, oldIndex, newIndex));
           }}
           axis="xy"
+          distance={5}
           handleDeleteColor={handleDeleteColor}
           pickedColors={pickedColors}
         />

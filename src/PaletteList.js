@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import styles from "./styles/PaletteListStyles";
+import { DialogContent } from "@material-ui/core";
 const useStyles = makeStyles(styles);
 
 const PaletteList = props => {
@@ -34,17 +35,22 @@ const PaletteList = props => {
           </Link>
         </nav>
         <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>Delete {paletteToDelete.name} palette?</DialogTitle>
+          <DialogTitle>
+            Delete {paletteToDelete.paletteName} palette?
+          </DialogTitle>
+          <DialogContent>
+            <PaletteInfo {...paletteToDelete} show={false} />
+          </DialogContent>
           <DialogActions>
             <Button onClick={confirmDelete} variant="contained" color="primary">
-              OK
+              DELETE
             </Button>
             <Button
               onClick={() => setOpen(false)}
               variant="contained"
               color="secondary"
             >
-              NOOO
+              CANCEL
             </Button>
           </DialogActions>
         </Dialog>
@@ -54,8 +60,9 @@ const PaletteList = props => {
               <PaletteInfo
                 key={p.id}
                 {...p}
+                show
                 handleDeletePalette={() => {
-                  setPaletteToDelete({ name: p.paletteName, id: p.id });
+                  setPaletteToDelete({ ...p });
                   setOpen(true);
                 }}
                 handleClick={() => props.history.push(`/palette/${p.id}`)}

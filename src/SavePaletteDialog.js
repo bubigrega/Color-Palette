@@ -38,7 +38,7 @@ const SavePaletteDialog = props => {
   return (
     <div>
       <Button variant="contained" color="secondary" onClick={handleOpenName}>
-        Save Palette
+        Save
       </Button>
       <Dialog
         onClose={handleClose}
@@ -83,9 +83,9 @@ const SavePaletteDialog = props => {
           title="Pick palette emoji"
           native
           showPreview={true}
-          ref={register}
           onClick={emoji => {
             handleSavePalette(data, emoji);
+            handleClose();
           }}
         />
       </Dialog>

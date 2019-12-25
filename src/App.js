@@ -4,10 +4,11 @@ import Palette from "./Palette";
 import create from "./createPaletteHelper";
 import { CssBaseline } from "@material-ui/core";
 import { Switch, Route } from "react-router-dom";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PaletteList from "./PaletteList";
 import SingleColor from "./SingleColor";
+import Page from "./Page";
 
-import "./App.css";
 import CreatePalette from "./CreatePalette";
 
 class App extends React.Component {
@@ -51,52 +52,74 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App">
+      <>
         <CssBaseline />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={routerProps => (
-              <PaletteList
-                palettes={this.state.palettes}
-                {...routerProps}
-                handleDeletePalette={this.handleDeletePalette}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/palette/new"
-            render={routerProps => (
-              <CreatePalette
-                {...routerProps}
-                addPalette={this.addPalette}
-                palettes={this.state.palettes}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/palette/:id"
-            render={routeProps => (
-              <Palette {...this.pickPalette(routeProps.match.params.id)} />
-            )}
-          />
-          <Route
-            exact
-            path="/palette/:paletteId/:colorId"
-            render={routerProps => (
-              <SingleColor
-                {...routerProps}
-                colors={this.pickPalette(routerProps.match.params.paletteId)}
-                colorId={routerProps.match.params.colorId}
-              />
-            )}
-          />
-          <Route render={() => <h1>404</h1>} />
-        </Switch>
-      </div>
+        <Route
+          render={({ location }) => (
+            <TransitionGroup>
+              <CSSTransition classNames="page" timeout={500} key={location.key}>
+                <Switch location={location}>
+                  <Route
+                    exact
+                    path="/"
+                    render={routerProps => (
+                      <Page>
+                        <PaletteList
+                          palettes={this.state.palettes}
+                          {...routerProps}
+                          handleDeletePalette={this.handleDeletePalette}
+                        />
+                      </Page>
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/palette/new"
+                    render={routerProps => (
+                      <Page>
+                        <CreatePalette
+                          {...routerProps}
+                          addPalette={this.addPalette}
+                          palettes={this.state.palettes}
+                        />
+                      </Page>
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/palette/:id"
+                    render={routeProps => (
+                      <Page>
+                        <Palette
+                          {...this.pickPalette(routeProps.match.params.id)}
+                        />
+                      </Page>
+                    )}
+                  />
+                  <Route
+                    exact
+                    path="/palette/:paletteId/:colorId"
+                    render={routerProps => (
+                      <Page>
+                        <SingleColor
+                          {...routerProps}
+                          colors={this.pickPalette(
+                            routerProps.match.params.paletteId
+                          )}
+                          colorId={routerProps.match.params.colorId}
+                        />
+                      </Page>
+                    )}
+                  />
+                  <Page>
+                    <Route render={() => <h1>404</h1>} />
+                  </Page>
+                </Switch>
+              </CSSTransition>
+            </TransitionGroup>
+          )}
+        />
+      </>
     );
   }
 }

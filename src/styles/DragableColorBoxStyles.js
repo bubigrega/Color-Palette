@@ -4,6 +4,7 @@ import sizes from "./mediaQueryHelper";
 export default {
   root: {
     position: "relative",
+    cursor: "grab",
     "&:hover svg": {
       paddingBottom: "0.3rem",
       paddingRight: "0.2rem",

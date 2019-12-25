@@ -6,8 +6,8 @@ import DeleteForever from "@material-ui/icons/DeleteForeverTwoTone";
 const useStyles = makeStyles(styles);
 
 function PaletteInfo(props) {
-  const { paletteName, emoji, handleClick, colors } = props;
-  const classes = useStyles();
+  const { paletteName, emoji, handleClick, colors, show } = props;
+  const classes = useStyles(show);
   const tiles = colors.map(c => (
     <div
       key={c.name}
@@ -21,14 +21,20 @@ function PaletteInfo(props) {
     props.handleDeletePalette();
   };
   return (
-    <div className={classes.root} onClick={handleClick}>
-      <span className={classes.delete}>
-        <DeleteForever
-          color="secondary"
-          className={classes.deleteIcon}
-          onClick={handleDeletePalette}
-        />
-      </span>
+    <div
+      className={classes.root}
+      onClick={handleClick}
+      style={{ cursor: show ? "pointer" : "default" }}
+    >
+      {show && (
+        <span className={classes.delete}>
+          <DeleteForever
+            color="secondary"
+            className={classes.deleteIcon}
+            onClick={handleDeletePalette}
+          />
+        </span>
+      )}
       <div className={classes.colors}>{tiles}</div>
       <h5 className={classes.title}>
         {paletteName}

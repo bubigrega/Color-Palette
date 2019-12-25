@@ -40,9 +40,8 @@ export const createStyles = theme => ({
     textDecoration: "none"
   },
   buttons: {
-    display: "flex",
-    alignItems: "space-between",
-    justifyContent: "center",
-    margin: theme.spacing(2)
+    display: "grid",
+    gridTemplateColumns: "auto auto",
+    gridGap: "5px"
   }
 });
