@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
+
 import ColorBox from "./ColorBox";
 import Navbar from "./Navbar";
 import Footer from "./Footer";

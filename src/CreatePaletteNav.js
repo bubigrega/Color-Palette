@@ -8,7 +8,9 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+
 import SavePaletteDialog from "./SavePaletteDialog";
+
 import { createStyles } from "./styles/CreatePaletteNavStyles";
 
 const useStyles = makeStyles(createStyles);

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import PaletteInfo from "./PaletteInfo";
+import { Link } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { makeStyles } from "@material-ui/core/styles";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import styles from "./styles/PaletteListStyles";
 import { DialogContent } from "@material-ui/core";
+
+import styles from "./styles/PaletteListStyles";
+
+import PaletteInfo from "./PaletteInfo";
+
 const useStyles = makeStyles(styles);
 
 const PaletteList = props => {
@@ -17,12 +20,13 @@ const PaletteList = props => {
     name: "",
     id: ""
   });
+  const [danger, setDanger] = useState(false);
   const classes = useStyles();
-  const { palettes } = props;
+  const { palettes, handleDeletePalette, history } = props;
 
   const confirmDelete = () => {
     setOpen(false);
-    props.handleDeletePalette(paletteToDelete.id);
+    handleDeletePalette(paletteToDelete.id);
   };
 
   const handleAddPaletteToDelete = palette => {
@@ -31,17 +35,33 @@ const PaletteList = props => {
   };
 
   const handleChangePath = id => {
-    props.history.push(`/palette/${id}`);
+    history.push(`/palette/${id}`);
+  };
+
+  const handleDanger = () => {
+    setDanger(!danger);
+    danger && props.handleRestore();
   };
 
   return (
     <div className={classes.root}>
       <div className={classes.container}>
         <nav className={classes.nav}>
-          <h1>React Colors</h1>
-          <Link className={classes.navLink} to="/palette/new">
-            Create new
-          </Link>
+          <h1>Palettes</h1>
+          <div className={classes.navButtons}>
+            <Link className={classes.navLink} to="/palette/new">
+              <Button variant="contained" color="default">
+                New Palette
+              </Button>
+            </Link>
+            <Button
+              onClick={handleDanger}
+              variant="contained"
+              color="secondary"
+            >
+              {danger ? "default palettes" : "danger"}
+            </Button>
+          </div>
         </nav>
         <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogTitle>

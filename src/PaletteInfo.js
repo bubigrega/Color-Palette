@@ -1,12 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import styles from "./styles/PaletteInfoStyles";
 import DeleteForever from "@material-ui/icons/DeleteForeverTwoTone";
+
+import styles from "./styles/PaletteInfoStyles";
 
 const useStyles = makeStyles(styles);
 
 const PaletteInfo = props => {
-  const { palette, handleChangePath, show } = props;
+  const { palette, handleChangePath, show, handleDeletePalette } = props;
   const { paletteName, emoji, colors, id } = palette;
 
   console.log("rendering: ", paletteName, new Date().getUTCMilliseconds());
@@ -22,7 +23,7 @@ const PaletteInfo = props => {
 
   const handleDelete = e => {
     e.stopPropagation();
-    props.handleDeletePalette(palette);
+    handleDeletePalette(palette);
   };
 
   return (

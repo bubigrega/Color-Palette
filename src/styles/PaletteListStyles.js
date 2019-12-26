@@ -26,8 +26,11 @@ export default {
     flexDirection: "column",
     alignItems: "flex-start",
     flexWrap: "wrap",
-    [sizes.down("sm")]: {
+    [sizes.down("md")]: {
       width: "60%"
+    },
+    [sizes.down("sm")]: {
+      width: "70%"
     },
     [sizes.down("xs")]: {
       width: "70%"
@@ -37,11 +40,27 @@ export default {
     width: "100%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
+    borderRadius: "10px",
+    margin: "0.5rem 0 0.5rem 0",
+    padding: "0.8rem",
+    "& h1": {
+      fontSize: "2rem",
+      margin: "0.4rem"
+    }
+  },
+  navButtons: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    [sizes.down("xs")]: {
+      flexDirection: "column"
+    }
   },
   navLink: {
     color: "white",
-    fontSize: "1rem",
+    margin: "0.5rem",
     textDecoration: "none"
   },
   palettes: {

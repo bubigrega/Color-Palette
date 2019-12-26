@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
+import arrayMove from "array-move";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,20 +8,27 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ColorPickerForm from "./ColorPickerForm";
-import arrayMove from "array-move";
-import DragableColorList from "./DragableColorList";
-import CreatePaletteNav from "./CreatePaletteNav";
-import stylesFun from "./styles/CreatePaletteStyles";
 
-const useStyles = makeStyles(stylesFun);
+import styles from "./styles/CreatePaletteStyles";
+
+import CreatePaletteNav from "./CreatePaletteNav";
+import DragableColorList from "./DragableColorList";
+import ColorPickerForm from "./ColorPickerForm";
+
+const useStyles = makeStyles(styles);
 
 const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
   const [open, setOpen] = useState(true);
-  const [pickedColors, setPickedColors] = useState([]);
+  const [pickedColors, setPickedColors] = useState(
+    () => JSON.parse(localStorage.getItem("picked")) || []
+  );
+
+  const classes = useStyles();
+  useEffect(() => {
+    localStorage.setItem("picked", JSON.stringify(pickedColors));
+  }, [pickedColors]);
 
   let colorsAreFull = pickedColors.length >= maxColors;
-  const classes = useStyles();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -50,6 +58,7 @@ const CreatePalette = ({ maxColors = 20, palettes, addPalette, history }) => {
       ...data
     };
     addPalette(newPalette);
+    setPickedColors([]);
     history.push("/");
   };
 

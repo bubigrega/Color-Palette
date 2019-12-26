@@ -2,6 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import { SortableElement } from "react-sortable-hoc";
+
 import styles from "./styles/DragableColorBoxStyles";
 
 const DraggableColorBox = SortableElement(props => {

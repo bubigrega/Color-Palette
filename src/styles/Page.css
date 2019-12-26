@@ -21,3 +21,6 @@
   opacity: 0;
   /* transform: translateX(-100%); */
 }
+.page-enter-done {
+  position: relative;
+}

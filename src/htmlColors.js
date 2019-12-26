@@ -6,7 +6,6 @@ export default [
   { name: "Azure", color: "#F0FFFF" },
   { name: "Beige", color: "#F5F5DC" },
   { name: "Bisque", color: "#FFE4C4" },
-  //   { name: "Black", color: "#000000" },
   { name: "BlanchedAlmond", color: "#FFEBCD" },
   { name: "Blue", color: "#0000FF" },
   { name: "BlueViolet", color: "#8A2BE2" },
@@ -143,7 +142,6 @@ export default [
   { name: "Turquoise", color: "#40E0D0" },
   { name: "Violet", color: "#EE82EE" },
   { name: "Wheat", color: "#F5DEB3" },
-  //   { name: "White", color: "#FFFFFF" },
   { name: "WhiteSmoke", color: "#F5F5F5" },
   { name: "Yellow", color: "#FFFF00" },
   { name: "YellowGreen", color: "#9ACD32" }

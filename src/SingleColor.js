@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
 import { makeStyles } from "@material-ui/core/styles";
-import Footer from "./Footer";
 import { Button } from "@material-ui/core";
+
+import Navbar from "./Navbar";
 import ColorBox from "./ColorBox";
+import Footer from "./Footer";
+
 import styles from "./styles/SingleColorStyles";
 
 const useStyles = makeStyles(styles);

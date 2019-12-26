@@ -2,7 +2,7 @@ import React from "react";
 import "./styles/Page.css";
 
 const Page = ({ children }) => {
-  return <div className="page">{children}</div>;
+  return <section className="page">{children}</section>;
 };
 
 export default Page;

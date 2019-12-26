@@ -1,12 +1,14 @@
 import React, { useRef } from "react";
 import useForm from "react-hook-form";
 import Button from "@material-ui/core/Button";
+import chroma from "chroma-js";
 import { ChromePicker } from "react-color";
 import TextField from "@material-ui/core/TextField";
 import { RHFInput } from "react-hook-form-input";
 import { withStyles } from "@material-ui/core/styles";
-import chroma from "chroma-js";
+
 import styles from "./styles/ColorPickerFormStyles";
+
 import htmlColors from "./htmlColors";
 
 const ColorPickerForm = props => {
